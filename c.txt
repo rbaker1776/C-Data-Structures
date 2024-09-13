@@ -1,0 +1,44 @@
+#ifndef CVECTOR_H_71621609F1DE
+#define CVECTOR_H_71621609F1DE
+
+#include <stdlib.h>
+#include <stdio.h>
+
+
+struct cvector_t;
+
+size_t _cvector_size(const struct cvector_t*);
+
+struct cvector_t
+{
+     void* m_data;
+    size_t m_size;
+    size_t m_capacity;
+    size_t m_element_size;
+
+    size_t (*size)(const struct cvector_t*);
+};
+
+#define _cvector_constructor_1(type) { .m_data = NULL }
+#define _cvector_constructor_2(type, size)
+#define _cvector_constructor_3(type, size, fill)
+
+//#define _ARG_COUNT(...) _ARG_COUNT_IMPL(__VA_ARGS__, 9, 8, 7, 6, 5, 4, 3, 2, 1)
+//#define _ARG_COUNT_IMPL(_1, _2, _3, _4, _5, _6, _7, _8, _9, ARGC, ...) ARGC
+
+#define _CONSTRUCTOR_DISPATCHER(...) _CONSTRUCTOR_DISPATCHER_IMPL(__VA_ARGS__)
+#define _CONSTRUCTOR_DISPATCHER_IMPL(type, size, fill, ARGC, ...) _cvector_constructor_##ARGC(__VA_ARGS__)
+
+#define cvector(...) _CONSTRUCTOR_DISPATCHER(__VA_ARGS__, 0)
+
+//#undef _DOWHILE_WRAP
+//#undef _ARG_COUNT
+//#undef _ARG_COUNT_IMPL
+//#undef _SELECT_CONSTRUCTOR
+
+size_t _cvector_size(const struct cvector_t* cv) { return cv->m_size; }
+
+
+typedef struct cvector_t cvector_t;
+
+#endif // CVECTOR_H_71621609F1DE
